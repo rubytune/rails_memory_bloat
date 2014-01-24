@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="assets/bootstrap.min.css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" ></script>
+    <script type="text/javascript" src="assets/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+	  $('.request_table').each(function() {
+	      var display = $(this).find('.record_breakdown_display');
+	      $(this).find('div.record_breakdown').each(function() {
+		  var breakdown = this;
+		  $(this).parent().mouseover(function() {
+		      display.html(breakdown.innerHTML);
+		  });
+	      });
+	  });
+      });
+    </script>
+    <style>
+      table td {
+	  padding-right: 20px;
+	  vertical-align: top;
+      }
+      td.record_breakdown:hover {
+	  background-color: #0bd;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#graphs">Graphs</a></li>
+      <li><a data-toggle="tab" href="#reqs-by-bloat">Requests by bloat</a></li>
+      <li><a data-toggle="tab" href="#reqs-by-memory">Requests by memory use</a></li>
+      <li><a data-toggle="tab" href="#reqs-by-records">Requests by ActiveRecords</a></li>
+      <li><a data-toggle="tab" href="#routes-by-bloat">Routes by bloat</a></li>
+      <li><a data-toggle="tab" href="#routes-by-records">Routes by ActiveRecords</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab-pane active" id="graphs">
+	<table>
+	  <% (0..@processes.size/3).map{|i| @processes[3*i, 3] }.each do |process_group| %>
+	  <tr>
+	    <% process_group.each do |process| %>
+	    <td>
+	      <a data-toggle="modal" href="#pid<%= process.pid %>">
+		<img src="<%= process.png_path %>" width="425" height="300" />
+	      </a>
+	    </td>
+	    <% end %>
+	  </tr>
+	  <% end %>
+	</table>
+      </div>
+      
+      <div class="tab-pane" id="reqs-by-bloat">
+	<% @requests = Request.sort{ |x,y| y.bloat <=> x.bloat }.take_while{|r| r.bloat >= 40*1024 } %>
+	<%= render "request_table.html.erb" %>
+      </div>
+
+      <div class="tab-pane" id="reqs-by-memory">
+	<% @requests = Request.sort{ |x,y| y.memory_used <=> x.memory_used }.reject{ |x| x.bloat < 4*1024 }.take_while{|r| r.memory_used >= 150*1024 } %>
+	<%= render "request_table.html.erb" %>
+      </div>
+
+      <div class="tab-pane" id="reqs-by-records">
+	<% @requests = Request.sort{ |x,y| y.record_count <=> x.record_count }.take_while{|r| r.record_count >= 10000 } %>
+	<%= render "request_table.html.erb" %>
+      </div>
+
+      <div class="tab-pane" id="routes-by-bloat">
+	<div style="text-align: left; width: 1100px; font-family: monospace">
+	  <ol>
+	    <% Request.sort{ |x,y| y.bloat <=> x.bloat }.map{ |x| x.resource.route }.uniq[0, 15].each do |route| %>
+	    <li><%= route %></li>
+	    <% end %>
+	  </ol>
+	</div>
+      </div>
+
+      <div class="tab-pane" id="routes-by-records">
+	<div style="text-align: left; width: 1100px; font-family: monospace">
+	  <ol>
+	    <% Request.sort{ |x,y| y.record_count <=> x.record_count }.map{ |x| x.resource.route }.uniq[0, 15].each do |route| %>
+	    <li><%= route %></li>
+	    <% end %>
+	  </ol>
+	</div>
+      </div>
+
+    </div>
+
+    <% @processes.each do |process| %>
+    <div class="modal" id="pid<%= process.pid %>" tabindex="-1">
+      <div class="modal-dialog" style="width: 1100px">
+	<div class="modal-content">
+	  <div class="modal-body">
+	    <center><img src="<%= process.png_path %>" /></center>
+	    <br /><br />
+	    <% @requests = process.requests.sort{ |x,y| y.bloat <=> x.bloat } %>
+	    <% @requests = @requests.take_while{|r| r.bloat >= 10*1024 } %>
+	    <%= render "request_table.html.erb" %>
+	  </div>
+	</div>
+      </div>
+    </div>
+    <% end %>
+
+    </div>
+  </body>
+</html>
