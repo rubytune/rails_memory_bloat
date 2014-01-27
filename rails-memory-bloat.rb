@@ -18,7 +18,7 @@ class Resource
   end
 end
 class Request
-  attr_accessor :previous, :process, :rss, :resource, :records, :record_count
+  attr_accessor :previous, :process, :rss, :resource, :records, :record_count, :user_id
   @@instances ||= []
   def self.new(*args)
     o = super(*args)
@@ -31,7 +31,7 @@ class Request
     unless log_string =~ /PID: (\d+) Project: (\w+) User: (\w+) Mem: (\d+)/
       abort("invalid line: #{log_string.strip}")  
     end
-    pid, @project, @user, @rss = [$1, $2, $3, $4].map(&:to_i)
+    pid, @project, @user_id, @rss = [$1, $2, $3, $4].map(&:to_i)
     @process = RailsProcess.find(pid)
 
     unless log_string =~ /Records: \(((\d+)( \| \w+: \d+)*)\); (.+)/

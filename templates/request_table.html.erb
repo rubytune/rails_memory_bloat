@@ -4,6 +4,7 @@
       <th>PID</th>
       <th>+RSS (MB)</th>
       <th>Memory Use (MB)</th>
+      <th>User Id</th>
       <th>Request</th>
       <th>Active Record Instantiations</th>
     </tr>
@@ -12,6 +13,7 @@
       <td><a data-toggle="modal" href="#pid<%= request.process.pid %>"><%= request.process.pid %></a></td>
       <td><%= sprintf('%.1f', request.bloat/1024.0) %></td>
       <td><%= '<' if request.bloat < 1 %><%= sprintf('%.1f', request.memory_used/1024.0) %></td>
+      <td><%= request.user_id %></td>
       <td><div style="width: 320px; overflow: hidden; white-space: nowrap"><%= request.resource.path %></div></td>
       <td class="record_breakdown">
 	<a href="#"><%= request.record_count %></a>
