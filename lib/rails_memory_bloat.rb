@@ -5,5 +5,5 @@ module RailsMemoryBloat
 end
 
 ActiveSupport.on_load :action_controller do
-  include RailsMemoryBloat::ActionController::RailsMemoryBloatController
+  include ActionController::RailsMemoryBloatController
 end
