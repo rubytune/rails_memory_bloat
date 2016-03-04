@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require 'optparse'
+require 'rails_memory_bloat'
 require 'rails_memory_bloat/request'
 
 log = nil
