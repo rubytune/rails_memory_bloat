@@ -1,6 +1,5 @@
 require "rails_memory_bloat/version"
-Rails.application.middleware.use(ActiveRecordInstanceCount::Middleware,
-                                                                  :logger => Logger.new('/dev/null'))
+#Rails.application.middleware.use(ActiveRecordInstanceCount::Middleware,:logger => Logger.new('/dev/null'))
  module RailsMemoryBloat
      # after_filter :log_memory_usage
    def log_memory_usage
