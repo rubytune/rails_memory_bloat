@@ -15,13 +15,13 @@ class RailsMemoryBloat::Request
     end
 
     pid, @project, @user_id, @rss = [$1, $2, $3, $4].map(&:to_i)
-    @process = RailsProcess.find(pid)
+    @process = RailsMemoryBloat::RailsProcess.find(pid)
 
     unless log_string =~ /Records: \(((\d+)( \| \w+: \d+)*)\); (.+)/
       abort("invalid line: #{log_string.strip}")  
     end
 
-    @records, @record_count, @resource = $1, $2.to_i, Resource.find($4)
+    @records, @record_count, @resource = $1, $2.to_i, RailsMemoryBloat::Resource.find($4)
     @records = @records.split(' | ')[1..-1]
 
     process.add_request(self)

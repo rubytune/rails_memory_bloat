@@ -19,7 +19,7 @@ File.open(log, 'r').each_line do |line|
   request = Request.new(line)
 end
 
-RailsProcess.instances.each do |process|
+RailsMemoryBloat::RailsProcess.instances.each do |process|
   File.open("#{output}/#{process.csv_path}", 'w') do |csv|
     process.requests.each_with_index do |r|
       csv.puts("#{r.rss}")
@@ -31,7 +31,7 @@ IO.popen('gnuplot', 'w') do |gp|
   gp.puts('set term pngcairo size 640,480')
   gp.puts('set grid')
   gp.puts('set datafile separator ","')
-  RailsProcess.instances.each do |process|
+ RailsMemoryBloat::RailsProcess.instances.each do |process|
     gp.puts(%(set output "#{output}/#{process.png_path}"))
     gp.puts("set title 'PID #{process.pid}'")
     gp.puts('set xlabel "Request #"')
@@ -44,5 +44,5 @@ IO.popen('gnuplot', 'w') do |gp|
 end
 
 File.open("#{output}/index.html", 'w') do |f|
-  f.write(ProcessView.new(RailsProcess.instances).to_html)
+  f.write(RailsMemoryBloat::ProcessView.new(RailsMemoryBloat::RailsProcess.instances).to_html)
 end
