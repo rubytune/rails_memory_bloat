@@ -2,6 +2,9 @@
 require 'optparse'
 require 'rails_memory_bloat'
 require 'rails_memory_bloat/request'
+require 'rails_memory_bloat/process_view'
+require 'rails_memory_bloat/rails_process'
+
 
 log = nil
 output = './output'
@@ -10,14 +13,15 @@ options = OptionParser.new do |opts|
     output = dir
   end
 end.tap(&:parse!)
-log = ARGV.shift or (warn(options.help) || exit(1))
 
+log = ARGV.shift or (warn(options.help) || exit(1))
+assests_path = File.dirname(__FILE__)
 system('mkdir', '-p', "#{output}/data")
-system('cp', '-r', 'assets', "#{output}/assets")
+system('cp', '-r', assests_path, "#{output}/assets")
 
 File.open(log, 'r').each_line do |line|
   next unless line[0, 14] == '[Memory Usage]'
-  request = Request.new(line)
+  request = RailsMemoryBloat::Request.new(line)
 end
 
 RailsMemoryBloat::RailsProcess.instances.each do |process|
