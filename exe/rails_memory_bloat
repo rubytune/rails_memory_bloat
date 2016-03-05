@@ -15,7 +15,8 @@ options = OptionParser.new do |opts|
 end.tap(&:parse!)
 
 log = ARGV.shift or (warn(options.help) || exit(1))
-assests_path = File.dirname(__FILE__)
+#assests_path = File.dirname(__FILE__)
+assests_path = Gem.loaded_specs['rails_memory_bloat'].full_gem_path + "/assets"
 system('mkdir', '-p', "#{output}/data")
 system('cp', '-r', assests_path, "#{output}/assets")
 
