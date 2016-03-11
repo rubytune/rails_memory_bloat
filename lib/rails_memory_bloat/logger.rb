@@ -1,5 +1,6 @@
-module ActionController #:nodoc:
-  module RailsMemoryBloatController
+require 'active_support/concern'
+module RailsMemoryBloat
+  module Logger
     extend ActiveSupport::Concern
     included do
       after_filter :log_memory_usage
