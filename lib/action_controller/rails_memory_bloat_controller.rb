@@ -1,7 +1,10 @@
 module ActionController #:nodoc:
   module RailsMemoryBloatController
     extend ActiveSupport::Concern
-    # after_filter :log_memory_usage
+    included do
+      after_filter :log_memory_usage
+    end
+
     def log_memory_usage
       rss = File.read('/proc/self/statm').split(' ')[1].to_i * 4
       records = ActiveRecordInstanceCount::HashUtils.to_sorted_array(ActiveRecord::Base.instantiated_hash)
