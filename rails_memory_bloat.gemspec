@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
-  spec.executables   = ['rails_memory_bloat']
+  spec.executables   = ['build_memory_report']
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency 'rails', '>= 3.0.0'
