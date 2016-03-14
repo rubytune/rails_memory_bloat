@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Peter Woo", "Sudara Williams"]
   spec.email         = ["team@rubytune.com "]
 
-  spec.summary       = %q{ActionController method to log per-request bloat and ActiveRecord instantiation breakdown}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{Logs memory usage and Active Record instantiations in Rails apps}
+  spec.homepage      = "https://github.com/rubytune/rails_memory_bloat"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
