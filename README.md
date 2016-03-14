@@ -6,11 +6,12 @@ This is a gem in two acts:
 
 When the gem is added to a rails app, it begins to log information on each request. Specifically, it logs the size of the process and the Active Record instantiation breakdown care of [active-record-instance-count](https://github.com/ruckus/active-record-instance-count).
 
-The logs the gem creates look like this:
+The logs  look like this:
 
 ```
 [2016-03-14 19:04:56 +0100]  INFO --: [Memory Usage] PID: 10730 Project: nil User: nil Mem: 179752.0 Records: (110 | User: 39 | Asset: 24 | Pic: 20 | Playlist: 6 | Track: 5 | Comment: 5 | Forum: 3 | Topic: 3 | Post: 3 | Update: 2); /
-[2016-03-14 18:47:16 +0100]  INFO --: [Memory Usage] PID: 9815 Project: nil User: 1 Mem: 297224.0 Records: (103 | Asset: 29 | Pic: 21 | User: 16 | Playlist: 15 | Listen: 10 | Track: 5 | Comment: 5 | Update: 2); /sudara```
+[2016-03-14 18:47:16 +0100]  INFO --: [Memory Usage] PID: 9815 Project: nil User: 1 Mem: 297224.0 Records: (103 | Asset: 29 | Pic: 21 | User: 16 | Playlist: 15 | Listen: 10 | Track: 5 | Comment: 5 | Update: 2); /sudara
+```
 
 
 ### Installation of the logger
