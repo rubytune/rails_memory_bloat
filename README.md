@@ -1,43 +1,46 @@
-rails-memory-bloat
-==================
+# Rails Memory Bloat
 
-ActionController method to log per-request bloat and ActiveRecord instantiation breakdown. Script to parse logs and generate graphical/tabular representation of process size over time.
+This is a gem in two acts:
 
-Requires gnuplot and the [active-record-instance-count](https://github.com/ruckus/active-record-instance-count) gem.
+ACT I: An ActionController method that logs per-request memory bloat and Active Record instantiation breakdown. 
+
+ACT II: A script to parse the logs and generate a graphical and tabular representation of process size over time.
+
+Direct dependencies are [active-record-instance-count](https://github.com/ruckus/active-record-instance-count) for Act I and   gnuplot for Act II.
+
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Adding this gem to your Gemfile will immediately change your rails logging output, engaging Act I :) 
 
 ```ruby
 gem 'rails_memory_bloat'
 ```
 
-And then execute:
+The logger requires the [active-record-instance-count](https://github.com/ruckus/active-record-instance-count) gem.
 
-    $ bundle
-
-    Or install it yourself as:
-
-        $ gem install rails_memory_bloat
-
-        ## Usage
-
-        TODO: Write usage instructions here
-
-        ## Development
-
-        After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-        To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-        ## Contributing
-
-        Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/rails_memory_bloat. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+The executable requires gnuplot.
 
 
-        ## License
+## Tasty Example
 
-        The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+![](http://skitch.sudara.at/2016-03-14-c07da.jpg)
 
-Requires gnuplot and the [active-record-instance-count](https://github.com/ruckus/active-record-instance-count) gem.
+
+## Caveats
+
+### Only works on Ubuntu. 
+
+The logger calls out to `/proc/self/statm` to grab PID-specific memory info. 
+
+### This gem adds latency
+
+We run this code in production, but only for a few hours on one server. The goal is to grab a good set of live production logs. 
+
+In our measurements, 10-20ms of time is added by grabbing the PID and memory info, which we consider unacceptable for constant use in production.
+
+
+
+## Updating this gem
+
+Bump `lib/rails_memory_bloat/version.rb` and `gem build rails_memory_bloat.gemspec`
