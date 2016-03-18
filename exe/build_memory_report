@@ -18,9 +18,8 @@ assests_path = File.join(Gem.loaded_specs['rails_memory_bloat'].full_gem_path, "
 system('mkdir', '-p', "#{output}/data")
 system('cp', '-r', assests_path, "#{output}/assets")
 
-File.open(log, 'r').each_line do |line|
-  next unless line[0, 14] == '[Memory Usage]'
-  request = ReportGenerator::Request.new(line)
+File.open(log,'r').grep(/Memory Usage/).each do |line|
+  ReportGenerator::Request.new(line)
 end
 
 ReportGenerator::RailsProcess.instances.each do |process|
