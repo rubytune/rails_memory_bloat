@@ -16,7 +16,7 @@ module ReportGenerator
       pid, @project, @user_id, @rss = [$1, $2, $3, $4].map(&:to_i)
       @process = ReportGenerator::RailsProcess.find(pid)
 
-      unless log_string =~ /Records: \(((\d+)( \| \w+: \d+)*)\); (.+)/
+      unless log_string =~ /Records: \(((\d+)( \| [\w:]+: \d+)*)\); (.+)/
         abort("invalid line: #{log_string.strip}")  
       end
 
